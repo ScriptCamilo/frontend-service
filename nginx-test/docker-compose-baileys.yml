@@ -1,0 +1,14 @@
+version: "3"
+services:
+  baileys_server:
+    build:
+      context: ./baileys
+      dockerfile: Dockerfile
+    command: npm run dev:server
+    volumes:
+      - ./baileys:/app
+    ports:
+      - "3001:3000"
+    environment:
+      NODE_ENV: development
+    restart: always

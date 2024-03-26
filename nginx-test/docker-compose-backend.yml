@@ -1,0 +1,89 @@
+version: "3"
+services:
+  backend_server_01:
+    container_name: backend_server_01
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: npm run dev:server
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3005:3000"
+    environment:
+      NODE_ENV: DEVELOPMENT
+      SERVER_NAME: server 01
+      BACKEND_URL: http://localhost
+      FRONTEND_URL: http://localhost:5173
+      PROXY_PORT: 3005
+      PORT: 3005
+
+      DB_DIALECT: mysql
+      DB_USER: deskrio
+      DB_PASS: deskrio
+      DB_NAME: deskrio
+
+      JWT_SECRET: deskrio_secret
+      JWT_REFRESH_SECRET: deskrio_refresh_secret
+
+      APP_ID: 1505069299988233
+      APP_SECRET: 3e096766509c9247ff8845c00fb84039
+    restart: always
+    depends_on:
+      - mysql_db
+
+  backend_server_02:
+    container_name: backend_server_02
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: npm run dev:server
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3006:3000"
+    environment:
+      NODE_ENV: DEVELOPMENT
+      SERVER_NAME: server 02
+      BACKEND_URL: http://localhost
+      FRONTEND_URL: http://localhost:5173
+      PROXY_PORT: 3006
+      PORT: 3006
+
+      DB_DIALECT: mysql
+      DB_USER: deskrio
+      DB_PASS: deskrio
+      DB_NAME: deskrio
+
+      JWT_SECRET: deskrio_secret
+      JWT_REFRESH_SECRET: deskrio_refresh_secret
+
+      APP_ID: 1505069299988233
+      APP_SECRET: 3e096766509c9247ff8845c00fb84039
+    restart: always
+    depends_on:
+      - mysql_db
+  mysql_db:
+    container_name: mysql_db
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: deskrio
+      MYSQL_DATABASE: deskrio
+      MYSQL_USER: deskrio
+      MYSQL_PASSWORD: deskrio
+    ports:
+      - "3306:3306"
+    restart: always
+  adminer:
+    container_name: adminer
+    image: adminer
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - mysql_db
+
+volumes:
+  mysql_data:
