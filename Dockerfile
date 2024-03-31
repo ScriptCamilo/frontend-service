@@ -1,25 +1,24 @@
-FROM node:14-alpine as build-deps
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY .env* ./
-COPY src/ ./src/
-COPY public/ ./public/
+ARG NODE_VERSION=14
+
+# DEVELOPMENT
+FROM node:${NODE_VERSION}-alpine as dev
+WORKDIR /app
+COPY package*.json .
+RUN apk add git
+RUN npm ci
+COPY . .
+CMD [ "npm", "run", "dev" ]
+
+# BUILD
+FROM dev as build
+WORKDIR /app
+USER root
 RUN npm run build
 
-FROM nginx:alpine
-RUN apk add --no-cache jq openssl
-
-ENV DOCKERIZE_VERSION v0.6.1
-RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-
-ENV PUBLIC_HTML=/var/www/public/
-
-COPY .docker/nginx /etc/nginx/
-COPY --from=build-deps /usr/src/app/build ${PUBLIC_HTML}
+# PRODUCTION
+FROM nginx:stable-alpine
+USER node
+COPY --from=build /app/build /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
-
-COPY .docker/add-env-vars.sh /docker-entrypoint.d/01-add-env-vars.sh
-RUN chmod +x /docker-entrypoint.d/01-add-env-vars.sh
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,29 @@
+name: frontend
+
+networks:
+  service:
+    driver: bridge
+
+volumes:
+  nodemodules: {}
+
+services:
+  app:
+    container_name: frontend_app
+    build:
+      context: .
+      args:
+        - NODE_VERSION=14
+      target: dev
+    networks:
+      - service
+    env_file:
+     - path: ./.env
+       required: true
+    ports:
+      - 8000:3000
+    volumes:
+      - ./:/app
+      - nodemodules:/app/node_modules
+    restart: always
+    stdin_open: true

@@ -7,6 +7,33 @@
     "url": "https://deskrio.com.br"
   },
   "private": true,
+  "scripts": {
+    "dev": "react-scripts start",
+    "prebuild": "rm -rf build",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "logs": "docker compose logs -f app",
+    "docker:up": "docker compose up -d --build && docker compose logs -f app",
+    "docker:down": "docker compose down",
+    "docker:start": "docker compose start && docker logs -f backend_app",
+    "docker:stop": "docker compose stop"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "dependencies": {
     "@babel/core": "^7.20.12",
     "@greatsumini/react-facebook-login": "^3.3.0",
@@ -66,26 +93,5 @@
     "@types/quill": "^2.0.11",
     "eslint": "^6.6.0",
     "react-devtools": "^4.27.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
