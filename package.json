@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "@deskrio/frontend-service",
   "version": "0.1.0",
   "system": {
     "version": "1.0.7",
@@ -10,13 +10,13 @@
   "scripts": {
     "dev": "react-scripts start",
     "prebuild": "rm -rf build",
-    "build": "react-scripts build",
+    "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "logs": "docker compose logs -f app",
-    "docker:up": "docker compose up -d --build && docker compose logs -f app",
+    "docker:up": "docker compose up -d --build && npm run logs",
     "docker:down": "docker compose down",
-    "docker:start": "docker compose start && docker logs -f backend_app",
+    "docker:start": "docker compose start && npm run logs",
     "docker:stop": "docker compose stop"
   },
   "eslintConfig": {
