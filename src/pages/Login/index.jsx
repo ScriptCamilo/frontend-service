@@ -111,8 +111,6 @@ const Login = () => {
     handleLogin(user);
   };
 
-  console.log('PROCESSO DE LIVE RELOAD ESTÁ FUNCIONANDO!')
-
   return (
     <>
       <div className={classes.root} component="main">

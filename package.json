@@ -14,6 +14,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "logs": "docker compose logs -f app",
+    "predocker:up": "if docker network ls | grep -q deskrio_network; then echo 'DeskRio network already created'; else docker network create deskrio_network; fi",
     "docker:up": "docker compose up -d --build && npm run logs",
     "docker:down": "docker compose down",
     "docker:start": "docker compose start && npm run logs",
