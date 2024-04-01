@@ -17,6 +17,8 @@ services:
       target: dev
     networks:
       - service
+    environment:
+      PORT: 3000
     env_file:
      - path: ./.env
        required: true
